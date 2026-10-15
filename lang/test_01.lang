@@ -1,0 +1,30 @@
+package main  // is this needed ???
+
+fmt         :: @import "core:fmt"
+custom_file :: @import "../lang/custom_file.lang"
+
+main :: proc()
+{
+  fmt->println( "hello world" )
+  
+  x := 123 // auto casts to int
+  x = x +2 * 3
+  b := procedure( x )
+
+  fmt->println( "b:", b )
+
+  custom_file->custom_proc(); semicolon_decl := 0.1234  // auto casts to f32
+}
+
+procedure :: proc( a: int ) -> bool
+{
+  ret : bool    // defaults to false
+  if a == 129
+  {
+    return true
+  }
+  else
+  {
+    return false
+  }
+}
