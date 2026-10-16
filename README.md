@@ -18,7 +18,8 @@ main :: proc()
 
   fmt->println( "b:", b )
 
-  custom_file->custom_proc()
+  arg_0 : f32 = 0.5
+  custom_file->custom_proc( &arg_0 )  // @UNSURE: have pointers ???
 }
 
 procedure :: proc( a: int ) -> bool
@@ -26,12 +27,11 @@ procedure :: proc( a: int ) -> bool
   ret : bool    // defaults to false
   if a == 129
   {
-    return true
+    ret = true
   }
   else
-  {
-    return false
-  }
+  { ret = false }
+  return ret
 }
 ```
 
@@ -41,8 +41,13 @@ procedure :: proc( a: int ) -> bool
     - joy / joi 
     - bry / berry
     - alfodr ( meaning: all-father, different name for odin )
-    - ygg / yggr ( meaning: terrible one, different name for odin )
-    - vak / vakr ( meaning: wakeful, awakener, different name for odin )
+    - **ygg** / yggr ( meaning: terrible one, different name for odin )
+      - no other meanings except maybe `You Go Girl`
+      - **use this one**, bc meaning is fitting and no other meanings
+    - **vak** / vakr ( meaning: wakeful, awakener, different name for odin )
+      - vāk -> hindu goddess of speech
+        - kinda still works but probably use `ygg` instead
+      - is pronounced `fuck` [in afrikaans at least](https://en.wiktionary.org/wiki/vak) which is funny
   - [ ] lexer (make tokens)
   - [ ] parser (make ast)
   - [ ] make intermediary format
