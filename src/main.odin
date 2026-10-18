@@ -237,10 +237,11 @@ parser_generate_ast_tree_from_tokens :: proc( tokens: [dynamic]token_t ) -> ( as
   append( &asts, ..ast_arr[:] )
   return asts
 }
-parser_parse_expression :: proc( tokens: [dynamic]token_t, offs: int, asts: ^[dynamic]ast_t )
+parser_parse_expression :: proc( tokens: [dynamic]token_t, offs: int, asts: ^[dynamic]ast_t ) -> ( node_idx: int )
 {
   switch tokens[offs].type
   {
+    case .Arrow_Right:              fallthrough
     case .Add:                      fallthrough
     case .Subtract:                 fallthrough
     case .Multiply:                 fallthrough
@@ -258,13 +259,13 @@ parser_parse_expression :: proc( tokens: [dynamic]token_t, offs: int, asts: ^[dy
     {
       // fmt.println( "[ERROR] binary operator at start of expression:", tokens[offs].type )
       // binary operator
-      parser_parse_expression( tokens, offs+1, asts )
+      ast_idx := parser_parse_expression( tokens, offs+1, asts )
 
-      ast_left_idx := append( asts, ast_t{ token=tokens[offs +1] } )
+      ast_left_idx := append( asts, ast_t{ value=tokens[offs +1] } )
       
       asts[ast_idx].left = &asts[ast_left_idx]
 
-      parser_parse_expression( tokens, offs+2 )
+      parser_parse_expression( tokens, offs+2, asts )
 
       return 
     }
@@ -272,15 +273,18 @@ parser_parse_expression :: proc( tokens: [dynamic]token_t, offs: int, asts: ^[dy
     case .New_Line:
     {
       // fmt.println( "[ERROR] new line at start of expression:", tokens[offs].type )
-      return
+      return -1
     }
     case .Number:   fallthrough
     case .Identifier:
     {
-      ast_idx := append( asts, ast_t{ token=tokens[offs] } )
+      ast_idx := append( asts, ast_t{ value=tokens[offs] } )
+      ast_idx_02 := parser_parse_expression( tokens, offs+1, asts )
 
     }
   }
+
+  return -1
 }
 // parser_parse_expression :: proc( tokens: [dynamic]token_t, offs: int, asts: ^[dynamic]ast_t )
 // {

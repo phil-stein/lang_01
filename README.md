@@ -1,14 +1,21 @@
-# lang_01
+# ygg programming language
 
+<img src="assets/logo_01.png" alt="logo" width="200"/>
 custom interpreted language based on [odin](https://odin-lang.org), isnt one to one but very similar
 
 ## example
 ```odin
 
 fmt         :: @import "core:fmt"
-custom_file :: @import "../lang/custom_file.lang"
+custom_file :: @import "../lang/custom_file.ygg"
 
-main :: proc()
+game_t :: struct
+{
+  is_running: bool,
+  entities:   [dyn]entity_t,  // dynamic array
+}
+
+main :: proc( args: []string )
 {
   fmt->println( "hello world" )
   
@@ -20,6 +27,21 @@ main :: proc()
 
   arg_0 : f32 = 0.5
   custom_file->custom_proc( &arg_0 )  // @UNSURE: have pointers ???
+
+  game := game_t{ is_running=true }
+
+  loop game.is_running 
+  {
+    // do stuff
+    loop e in game.entities
+    {
+      // do stuff to e
+      loop i in 0..<10
+      {
+        // do something 10 times
+      }
+    }
+  }
 }
 
 procedure :: proc( a: int ) -> bool
@@ -35,8 +57,12 @@ procedure :: proc( a: int ) -> bool
 }
 ```
 
+
+## name
+ygg or yggr meaning terrible one, which is another name for odin
+
 ## todo
-  - [ ] figure out name
+  - [X] figure out name
     - muh
     - joy / joi 
     - bry / berry
@@ -48,7 +74,8 @@ procedure :: proc( a: int ) -> bool
       - vāk -> hindu goddess of speech
         - kinda still works but probably use `ygg` instead
       - is pronounced `fuck` [in afrikaans at least](https://en.wiktionary.org/wiki/vak) which is funny
-  - [ ] lexer (make tokens)
+  - [-] lexer (make tokens)
+    - [ ] {, }, [, ], loop, proc etc.  
   - [ ] parser (make ast)
   - [ ] make intermediary format
   - [ ] make runtime interpreter for intermediary format
