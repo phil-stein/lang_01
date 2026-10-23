@@ -1,4 +1,5 @@
 # ygg programming language
+>doesnt actually work yet still WIP
 
 <img src="assets/logo_01.png" alt="logo" width="200"/>
 custom interpreted language based on [odin](https://odin-lang.org), isnt one to one but very similar
@@ -6,8 +7,8 @@ custom interpreted language based on [odin](https://odin-lang.org), isnt one to 
 ## example
 ```odin
 
-fmt         :: @import "core:fmt"
-custom_file :: @import "../lang/custom_file.ygg"
+fmt          :: @import "core:fmt"
+custom_files :: @import "../custom_files" // custom fils needs to be a different dir cause all files in src dir are automatically included
 
 game_t :: struct
 {
@@ -26,14 +27,14 @@ main :: proc( args: []string )
   fmt->println( "b:", b )
 
   arg_0 : f32 = 0.5
-  custom_file->custom_proc( &arg_0 )  // @UNSURE: have pointers ???
+  custom_files->custom_proc( &arg_0 )  // @UNSURE: have pointers ???
 
   game := game_t{ is_running=true }
 
   loop game.is_running 
   {
     // do stuff
-    loop e in game.entities
+    loop e, e_idx in game.entities
     {
       // do stuff to e
       loop i in 0..<10
